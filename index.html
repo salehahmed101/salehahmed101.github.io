@@ -3,34 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Saleh Ahmed — Software Engineering student in Kamloops, exploring web development, systems analysis, and digital transformation.">
-  <meta name="theme-color" content="#1749e6">
-  <title>Saleh Ahmed · Software Engineering</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231749e6'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Arial' font-size='32' font-weight='bold' fill='white'%3ESA%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Saleh Ahmed is a Software Engineering student in Kamloops, BC, focused on digital transformation, systems analysis, and thoughtful web development.">
+  <meta name="theme-color" content="#f7f8fb">
+  <title>Saleh Ahmed — Software Engineering Student</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%233c4ff5'/%3E%3Cpath d='M17 42 28 20h8l11 22h-8l-2.3-5H27.3L25 42h-8Zm13.2-11.4L32 26l1.8 4.6h-3.6Z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script defer src="js/data.js"></script>
   <script defer src="js/script.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header wrap">
-    <a class="brand" href="#home" aria-label="Home"><span class="brand-mark">SA</span><span id="brand-name">Saleh Ahmed</span></a>
-    <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu</button>
-    <nav id="navigation" aria-label="Main navigation"><a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#education">Education</a><a class="nav-contact" href="#contact">Let’s talk <span aria-hidden="true">↗</span></a></nav>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#home" aria-label="Saleh Ahmed home"><span class="brand-mark">SA</span><span id="brand-name">Saleh Ahmed</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation"><span></span><span></span><span></span><b>Menu</b></button>
+      <nav id="navigation" aria-label="Main navigation"><a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#projects">Projects</a><a href="#education">Education</a><a class="nav-cta" href="#contact">Let’s talk <span aria-hidden="true">↗</span></a></nav>
+    </div>
   </header>
   <main id="main">
     <section class="hero wrap" id="home" aria-labelledby="hero-name">
-      <div class="hero-copy"><p class="eyebrow" id="hero-status">Open to co-op & junior opportunities</p><h1 id="hero-name">Saleh Ahmed<span class="accent">.</span></h1><p class="hero-title" id="hero-title">Software Engineering student</p><p class="hero-tagline" id="hero-tagline">Connecting people, processes, and thoughtful software.</p><div class="actions" id="hero-actions"></div><p class="hero-location" id="hero-location">Based in Kamloops, British Columbia</p></div>
-      <aside class="hero-note"><span class="note-label" id="focus-label">A curious mind. A practical approach.</span><div class="note-symbol" aria-hidden="true">{<span>↗</span>}</div><div><p class="note-kicker" id="focus-kicker">Where my interests meet</p><p class="note-title" id="focus-title">People.<br>Processes.<br>Possibilities.</p></div><div class="note-footer" id="focus-footer">Learning with purpose. Building with care.</div></aside>
+      <div class="hero-copy"><p class="eyebrow eyebrow-dot" id="hero-status">Open to co-op & junior opportunities</p><h1 id="hero-name">Saleh Ahmed<span class="accent">.</span></h1><p class="hero-title" id="hero-title">Software Engineering Student</p><p class="hero-tagline" id="hero-tagline">Connecting people, processes, and thoughtful software.</p><div class="hero-actions" id="hero-actions"></div><p class="hero-location"><span class="location-pin" aria-hidden="true">↳</span><span id="hero-location">Based in Kamloops, British Columbia</span></p></div>
+      <div class="hero-visual" aria-label="A visual statement about Saleh's work"><div class="visual-grid" aria-hidden="true"></div><div class="visual-orbit orbit-one" aria-hidden="true"></div><div class="visual-orbit orbit-two" aria-hidden="true"></div><div class="visual-card"><div class="visual-card-top"><span>SA</span><span class="visual-status"><i></i> In progress</span></div><div class="visual-monogram">SA</div><div class="visual-card-bottom"><span>Systems</span><span>People</span><span>Web</span></div></div><p class="visual-caption">A practical mind for complex problems.</p></div>
     </section>
-    <section class="section wrap about-section" id="about"><div class="section-heading"><p class="eyebrow">A little about me</p><h2 id="about-heading">Technology with<br>a human perspective.</h2></div><div><p class="about-copy" id="about-copy"></p><p class="muted" id="about-learning"></p></div></section>
-    <section class="section skills-section" id="skills"><div class="wrap"><div class="section-heading"><p class="eyebrow">My toolkit</p><h2 id="skills-heading">Skills I bring to the table.</h2></div><div class="skills-grid" id="skills-list"></div></div></section>
-    <section class="section wrap" id="experience"><div class="section-heading"><p class="eyebrow">Along the way</p><h2 id="experience-heading">Experience, in practice.</h2></div><div id="experience-list" class="experience-list"></div></section>
-    <section class="section projects-section" id="projects"><div class="wrap"><div class="section-heading"><p class="eyebrow">Selected coursework</p><h2 id="projects-heading">Ideas put into practice.</h2><p class="muted" id="projects-intro">Academic projects at the University of Bolton.</p></div><div class="projects-grid" id="projects-list"></div></div></section>
-    <section class="section wrap" id="education"><div class="section-heading"><p class="eyebrow">Always learning</p><h2 id="education-heading">Education & perspective.</h2></div><div class="education-grid" id="education-list"></div></section>
-    <section class="contact-section" id="contact"><div class="wrap contact-layout"><div><p class="eyebrow" id="contact-eyebrow">Let’s connect</p><h2 id="contact-heading">Good things start<br>with a conversation.</h2><p id="contact-copy">Have a co-op opportunity, a junior role, or an interesting project? I’d love to hear from you.</p></div><div id="contact-links" class="contact-links"></div></div></section>
+    <section class="intro-section wrap" id="about" aria-labelledby="about-heading"><div class="section-label"><span class="eyebrow">A little about me</span></div><div class="intro-content"><h2 id="about-heading">Technology with<br><em>a human perspective.</em></h2><div class="intro-copy"><p id="about-copy"></p><p class="muted" id="about-learning"></p></div></div></section>
+    <section class="skills-section" id="skills" aria-labelledby="skills-heading"><div class="wrap"><div class="section-heading-row"><div><div class="section-label"><span class="eyebrow">My toolkit</span></div><h2 id="skills-heading">Tools for turning<br>ideas into <em>momentum.</em></h2></div><p class="section-aside">A growing set of technical and analytical skills shaped by coursework, work, and curiosity.</p></div><div class="skills-grid" id="skills-list"></div></div></section>
+    <section class="experience-section wrap" id="experience" aria-labelledby="experience-heading"><div class="section-heading-row experience-heading"><div><div class="section-label"><span class="eyebrow">Along the way</span></div><h2 id="experience-heading">Experience that<br><em>keeps me grounded.</em></h2></div><p class="section-aside">Every role has strengthened my communication, reliability, and eye for how systems work in the real world.</p></div><div class="experience-list" id="experience-list"></div></section>
+    <section class="projects-section" id="projects" aria-labelledby="projects-heading"><div class="wrap"><div class="section-heading-row projects-heading"><div><div class="section-label"><span class="eyebrow">Selected coursework</span></div><h2 id="projects-heading">Ideas made <em>tangible.</em></h2></div><p class="section-aside" id="projects-intro">Academic projects at the University of Bolton.</p></div><div class="projects-grid" id="projects-list"></div></div></section>
+    <section class="education-section wrap" id="education" aria-labelledby="education-heading"><div class="section-heading-row"><div><div class="section-label"><span class="eyebrow">Always learning</span></div><h2 id="education-heading">Building a wider<br><em>point of view.</em></h2></div><p class="section-aside">Software is never only about code. It is also about people, context, and the questions worth asking.</p></div><div class="education-grid" id="education-list"></div></section>
+    <section class="contact-section" id="contact" aria-labelledby="contact-heading"><div class="wrap contact-card"><div class="contact-copy"><div class="section-label"><span class="eyebrow" id="contact-eyebrow">Let’s connect</span></div><h2 id="contact-heading">Good things start<br>with <em>a conversation.</em></h2><p id="contact-copy"></p></div><div class="contact-links" id="contact-links"></div></div></section>
   </main>
-  <footer class="wrap site-footer"><p id="footer-copy">Saleh Ahmed · Built with curiosity.</p><div><a href="#home">Back to top ↑</a><a href="admin.html">Admin</a></div></footer>
-  <noscript><p class="wrap">Please enable JavaScript to view the complete portfolio and use the editor.</p></noscript>
+  <footer class="site-footer"><div class="wrap footer-inner"><p id="footer-copy">Saleh Ahmed · Built with curiosity.</p><div class="footer-links"><a href="#home">Back to top ↑</a><a href="admin.html">Admin</a></div></div></footer>
+  <noscript><p class="noscript wrap">Please enable JavaScript to view the complete portfolio.</p></noscript>
 </body>
 </html>

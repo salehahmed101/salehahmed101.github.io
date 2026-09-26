@@ -14,9 +14,9 @@ A complete, responsive portfolio using HTML, CSS, and vanilla JavaScript. No bui
 
 The palette combines cobalt blue for emphasis, dark ink for readable typography, white and cool gray for open space, and lime accents on dark sections. The public page presents a strong typographic introduction, an about section, a skills grid, work history, academic project cards, education, and contact links. The dashboard uses the same visual language, with section tabs and clearly labeled controls.
 
-The website shows no numeric digits, numbered lists, decorative counters, or year-based footer. Dates are written in words; Seven-Eleven is spelled out. Contact information is available through **Email me** and **Call me** links, which retain the supplied address and telephone destination without printing their digits. LinkedIn stays hidden until a real profile URL is entered. No fictional profile is linked.
+The website uses normal date and contact formatting, with no numbered lists or decorative counters. Contact information is available through **Email me** and **Call me** links. LinkedIn stays hidden until a real profile URL is entered. No fictional profile is linked.
 
-The editor represents digit runs as words inside special brackets. For example, the email address appears as `salehmed⟦two zero two five⟧@gmail.com`. This is an editable representation: saving or exporting restores the original digits. You can type digits normally, and the editor converts them immediately. Proficiency uses an unnumbered slider. Skill ratings start disabled because no personal proficiency values were supplied; enable them only when you want to show your own assessment.
+The editor keeps dates, phone numbers, and email addresses in their normal readable form. Proficiency uses a subtle optional meter. Skill ratings start disabled because no personal proficiency values were supplied; enable them only when you want to show your own assessment.
 
 Typography uses Manrope and DM Sans from Google Fonts, with Arial fallbacks if the font service is unavailable. Layouts work from narrow phones to wide desktops; reduced-motion settings are respected. Forms, navigation, tabs, focus states, and status messages support keyboard use.
 
@@ -83,7 +83,7 @@ Check these behaviors:
 - Adding, editing, and removing skills, roles, projects, and education works.
 - Export a JSON backup, make a temporary edit, import the backup, and save to restore it.
 - An invalid JSON file or an unsafe link is rejected and does not replace saved content.
-- The contact buttons preserve the supplied email and phone destinations while their labels contain no digits.
+- The contact buttons preserve the supplied email and phone destinations.
 - Logout returns to the password gate, and narrow screens do not scroll horizontally.
 
 Local storage is separated by origin, including the port. Content saved on localhost does not automatically move to the deployed website. Import your backup on the deployed site if you also want its local editor to contain those changes.
