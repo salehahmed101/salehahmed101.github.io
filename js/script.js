@@ -53,12 +53,52 @@
   function element(tag, className, text) { const result = document.createElement(tag); if (className) result.className = className; if (text !== undefined) result.textContent = noDigits(text); return result; }
   function link(label, url, className) { const anchor = element("a", className, label); anchor.href = safeUrl(url); if (/^https?:/.test(anchor.getAttribute("href"))) { anchor.target = "_blank"; anchor.rel = "noopener noreferrer"; } return anchor; }
 
-  function render(data) {
-    if (!document.getElementById("hero-name")) return;
-    const text = (id, value) => { const target = document.getElementById(id); if (target) target.textContent = noDigits(value); };
-    const fill = (id, children) => { const target = document.getElementById(id); if (target) target.replaceChildren(...children); };
-    document.title = noDigits(data.hero.name + " — " + data.hero.title);
-    text("brand-name", data.hero.name); text("hero-name", data.hero.name); document.getElementById("hero-name").append(element("span", "accent", "."));
+  function updateMetadata(data, targetDocument) {
+    const siteUrl = "https://salehahmed101.github.io/";
+    const city = data.contact.location.split(",")[0].trim();
+    const title = data.hero.name + " | " + data.hero.title + (city ? " in " + city : "");
+    const description = data.hero.name + ", " + data.hero.title + (data.contact.location ? " in " + data.contact.location : "") + ". Explore projects, skills, experience, and education.";
+    targetDocument.title = title;
+    const metadata = {
+      'meta[name="description"]': description,
+      'meta[name="author"]': data.hero.name,
+      'meta[property="og:title"]': title,
+      'meta[property="og:description"]': description,
+      'meta[property="og:site_name"]': data.hero.name,
+      'meta[name="twitter:title"]': title,
+      'meta[name="twitter:description"]': description
+    };
+    Object.entries(metadata).forEach(([selector, value]) => {
+      targetDocument.querySelector(selector)?.setAttribute("content", value);
+    });
+    const sameAs = ["https://github.com/salehahmed101"];
+    if (/^https?:/.test(safeUrl(data.contact.linkedin, false))) sameAs.push(safeUrl(data.contact.linkedin, false));
+    const profile = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {"@type": "WebSite", "@id": siteUrl + "#website", url: siteUrl, name: data.hero.name, alternateName: data.hero.name + " Portfolio", inLanguage: "en-CA"},
+        {
+          "@type": "ProfilePage", "@id": siteUrl + "#profile", url: siteUrl, name: title, description,
+          isPartOf: {"@id": siteUrl + "#website"}, inLanguage: "en-CA",
+          mainEntity: {
+            "@type": "Person", "@id": siteUrl + "#person", name: data.hero.name, url: siteUrl,
+            description: data.hero.title,
+            homeLocation: {"@type": "Place", name: data.contact.location},
+            knowsAbout: data.skills.map(skill => skill.name), sameAs
+          }
+        }
+      ]
+    };
+    const structuredData = targetDocument.getElementById("profile-schema");
+    if (structuredData) structuredData.textContent = JSON.stringify(profile, null, 2).replace(/</g, "\\u003c");
+  }
+
+  function render(data, targetDocument = document) {
+    if (!targetDocument.getElementById("hero-name")) return;
+    const text = (id, value) => { const target = targetDocument.getElementById(id); if (target) target.textContent = noDigits(value); };
+    const fill = (id, children) => { const target = targetDocument.getElementById(id); if (target) target.replaceChildren(...children); };
+    updateMetadata(data, targetDocument);
+    text("brand-name", data.hero.name); text("hero-name", data.hero.name); targetDocument.getElementById("hero-name").append(element("span", "accent", "."));
     ["title", "tagline", "status", "location"].forEach(key => text("hero-" + key, data.hero[key]));
     ["label", "kicker", "title", "footer"].forEach(key => text("focus-" + key, data.hero["focus" + key[0].toUpperCase() + key.slice(1)]));
     fill("hero-actions", [link(data.hero.primaryLabel, data.hero.primaryUrl, "button button-primary"), link(data.hero.secondaryLabel, data.hero.secondaryUrl, "button button-quiet")]);
@@ -72,8 +112,15 @@
     const contacts = []; if (data.contact.email) contacts.push(link(data.contact.emailLabel + " ↗", "mailto:" + data.contact.email, "contact-link")); if (data.contact.phone) contacts.push(link(data.contact.phoneLabel + " ↗", "tel:" + data.contact.phone.replace(/[^+\d]/g, ""), "contact-link")); if (data.contact.linkedin) contacts.push(link(data.contact.linkedinLabel + " ↗", data.contact.linkedin, "contact-link")); contacts.push(element("p", "contact-location", data.contact.location)); fill("contact-links", contacts);
   }
 
+  function exportHtml(data) {
+    const snapshot = document.cloneNode(true);
+    render(validate(data), snapshot);
+    snapshot.querySelector(".menu-toggle")?.setAttribute("aria-expanded", "false");
+    return "<!doctype html>\n" + snapshot.documentElement.outerHTML + "\n";
+  }
+
   function save(data) { const clean = validate(data); localStorage.setItem(storageKey, JSON.stringify(clean)); render(clean); return clean; }
-  window.Portfolio = {load, save, validate, render, clone, noDigits, encode, decode, storageKey, get storageWarning() { return storageWarning; }};
+  window.Portfolio = {load, save, validate, render, exportHtml, clone, noDigits, encode, decode, storageKey, get storageWarning() { return storageWarning; }};
   render(load());
   window.addEventListener("storage", event => { if (event.key === storageKey) render(load()); });
   const menu = document.querySelector(".menu-toggle");
