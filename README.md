@@ -6,9 +6,9 @@ A complete, responsive portfolio using HTML, CSS, and vanilla JavaScript. No bui
 
 `index.html` contains the public single-page portfolio, and its footer includes an **Admin** link to `admin.html`. The editor starts at a password screen. The initial password is `admin123`. It compares a SHA-256 hash in the browser before revealing the dashboard.
 
-`js/data.js` supplies the published content. `js/script.js` validates that data, renders the public page with safe text nodes, and checks browser storage for a local override. `js/admin.js` provides editing, a live preview, saving, and backup tools. Storage keys include the website path so another portfolio hosted under a different GitHub Pages project does not share these edits.
+`index.html` includes the complete published portfolio so it is readable before JavaScript runs. `js/data.js` supplies the same content to the editor and interactive renderer. `js/script.js` validates that data, renders the public page with safe text nodes, and checks browser storage for a local override. `js/admin.js` provides editing, a live preview, saving, and backup tools. Storage keys include the website path so another portfolio hosted under a different GitHub Pages project does not share these edits.
 
-**Saving in the editor updates only this browser on this website.** It updates the embedded preview immediately and other open portfolio tabs when you save. It does not push changes to GitHub or update other visitors. To publish an edit, export the publication file, replace `js/data.js` in the repository, and let GitHub Pages redeploy it. The Backups tab explains this workflow.
+**Saving in the editor updates only this browser on this website.** It updates the embedded preview immediately and other open portfolio tabs when you save. It does not push changes to GitHub or update other visitors. To publish an edit, export both the publication file and the SEO homepage from the same draft. Replace `js/data.js` and root-level `index.html` in the same GitHub commit, and let GitHub Pages redeploy them. The Backups tab explains this workflow.
 
 ## Step 2: Design decisions
 
@@ -30,10 +30,13 @@ saleh-ahmed-portfolio/
   admin.html
   css/
     styles.css
+    admin.css
   js/
     data.js
     script.js
     admin.js
+  robots.txt
+  sitemap.xml
   .nojekyll
   .gitignore
   README.md
@@ -41,9 +44,10 @@ saleh-ahmed-portfolio/
 
 - `index.html`: public page structure, metadata, favicon, navigation, and Admin link.
 - `admin.html`: password form, editor dashboard, live preview, and unsaved-change dialog.
-- `css/styles.css`: complete responsive public and editor styling.
+- `css/styles.css`: responsive public styling.
+- `css/admin.css`: editor styling.
 - `js/data.js`: all publication content, initialized from the supplied resume.
-- `js/script.js`: rendering, storage, digit formatting, safe link handling, and import validation.
+- `js/script.js`: rendering, synchronized search metadata, static homepage export, storage, safe link handling, and import validation.
 - `js/admin.js`: password gate, every content editor, save/logout, import/export, and publication export.
 - `.nojekyll`: tells GitHub Pages to serve these files without Jekyll processing.
 
@@ -120,8 +124,8 @@ These settings follow GitHub’s [publishing-source guide](https://docs.github.c
 ### Publish later content changes
 
 - Edit the portfolio in the Admin Panel and save a JSON backup.
-- In **Backups**, choose **Export publication file**. The download is named `data.js`.
-- On GitHub, navigate into the repository’s `js` folder, choose **Add file → Upload files**, and upload this replacement `data.js`. Commit the change. Alternatively, edit `js/data.js` and paste the complete exported file content.
+- In **Backups**, choose **Export publication file** to download `data.js`, then choose **Export SEO homepage** to download `index.html`. Export both from the same draft. The homepage export preserves your Google verification tag and updates its visible content, search metadata, and structured data.
+- Put the exported `data.js` inside a local `js` folder. At the GitHub repository root, use **Add file → Upload files** to upload that `js` folder and the exported `index.html` together. Commit both changes. Keep the existing `css` folder and other files.
 - Wait for the next Pages deployment. Open the live site in a private browsing window to inspect the new shared content without your browser-local override.
 - If your existing browser still shows an older saved version, import the corresponding new JSON backup and save it, or clear only this site’s local storage after exporting anything you want to preserve.
 - To change styling or behavior, edit and commit the matching HTML, CSS, or JavaScript source files. GitHub Pages republishes them after the commit.
@@ -149,3 +153,13 @@ Someone bypassing this local gate cannot thereby push to your GitHub repository 
 For genuine authenticated publishing, keep the public portfolio on Pages and move editing and content storage to a backend such as Firebase or Supabase. Authenticate the owner there, enforce ownership with server-side security rules or row-level policies, validate writes on the server, and allow public read access only to approved portfolio fields. Keep privileged keys exclusively on the server. Never rely on hiding an edit button or checking a password in browser JavaScript to authorize shared writes.
 
 The supplied experience dates are retained as provided. Review current employment and education details before using this portfolio in applications. Project summaries deliberately remain brief; add your own verified responsibilities, outcomes, technologies, and project links through the editor.
+
+## Search optimization
+
+The homepage uses a descriptive title, a canonical URL, social-sharing title and description tags, and WebSite/ProfilePage/Person structured data based on the visible portfolio. Its full content is present in HTML, including skills, work history, projects, education, and contact links. JavaScript enhances the same content rather than being required to read it.
+
+The canonical address is `https://salehahmed101.github.io/`. `sitemap.xml` lists that single public page. `robots.txt` permits crawling and announces the sitemap. The admin page retains its `noindex,nofollow` meta tag; do not disallow it in robots.txt, because crawlers need to read the tag. Do not add admin.html, fragment sections, or duplicate index.html URLs to the sitemap.
+
+The existing Google site-verification tag is preserved in the homepage. Keep it when replacing files. In your verified [Google Search Console property](https://search.google.com/search-console), open **Sitemaps**, submit `sitemap.xml`, then inspect the homepage and choose **Request indexing**. Check the URL Inspection report later for indexing status. These improvements help search engines understand the site; they do not guarantee indexing or a first-place ranking.
+
+For future edits, export and publish both `js/data.js` and `index.html` as described above. An Admin save only changes your browser. The SEO homepage export uses your current draft, including the same titles, dates, skills, and project text shown to visitors.
