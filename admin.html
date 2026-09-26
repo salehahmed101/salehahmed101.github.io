@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#1749e6">
+  <title>Portfolio editor · Saleh Ahmed</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231749e6'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Arial' font-size='32' font-weight='bold' fill='white'%3ESA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/data.js"></script><script defer src="js/script.js"></script><script defer src="js/admin.js"></script>
+</head>
+<body class="admin-body">
+  <header class="admin-header"><a class="brand" href="index.html"><span class="brand-mark">SA</span><span>Portfolio editor</span></a><a href="index.html">Back to portfolio ↗</a></header>
+  <main>
+    <section class="login-card" id="login-section" aria-labelledby="login-heading"><p class="eyebrow">A space for your story</p><h1 id="login-heading">Welcome back.</h1><p class="muted">Enter your password to edit your portfolio.</p><form id="login-form"><label class="field"><span>Password</span><input id="password" type="password" autocomplete="current-password" required></label><button class="button primary" type="submit">Open editor</button><p id="login-status" class="status" role="status" aria-live="polite"></p></form><p class="muted">This editor saves to this browser. It does not sign in to GitHub.</p></section>
+    <section id="dashboard" class="editor-shell" hidden aria-label="Portfolio dashboard">
+      <div class="editor-top"><div><p class="eyebrow">Make it yours</p><h1>Your portfolio.</h1></div><div class="editor-actions"><button class="button secondary" id="backup-shortcut">Export / Import JSON</button><button class="button secondary" id="logout">Logout</button><button class="button primary" id="save">Save Changes</button></div></div>
+      <p class="editor-notice">Changes are saved only in this browser. To update the website for everyone, export a publication file from Backups and replace the matching file on GitHub. Numeric characters appear as words in brackets while editing; links keep their original values.</p>
+      <div class="editor-layout"><nav class="editor-nav" role="tablist" aria-label="Portfolio sections" aria-orientation="vertical"></nav><div><section id="editor-content" class="editor-content" role="tabpanel" tabindex="0"></section><p id="editor-status" class="status" role="status" aria-live="polite"></p><details class="editor-preview"><summary>Live portfolio preview</summary><iframe title="Live portfolio preview" src="index.html"></iframe></details></div></div>
+    </section>
+  </main>
+  <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-heading"><h2 id="confirm-heading">Discard unsaved changes?</h2><p id="confirm-message"></p><div class="actions"><button class="button secondary" id="confirm-cancel">Keep editing</button><button class="button primary" id="confirm-accept">Continue</button></div></dialog>
+</body>
+</html>
