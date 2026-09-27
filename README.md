@@ -2,6 +2,14 @@
 
 A complete, responsive portfolio using HTML, CSS, and vanilla JavaScript. No build step, framework, database, or paid service is required.
 
+## GitHub publishing upgrade
+
+The secure GitHub-connected editor is implemented in `publisher/`, with setup instructions in [publisher/SETUP.md](publisher/SETUP.md). It is not active until the Worker is deployed, the owner's GitHub App is installed on this repository, and the public `js/github-config.js` is connected. Until then, Admin explicitly offers the existing password-protected local editor and exports.
+
+Once connected, sign in with GitHub and use **Publish to GitHub** to update the portfolio and SEO page together. **Save draft** remains a local recovery copy. The service restricts publication to the owner's immutable GitHub user ID and this repository, validates content on the server, preserves other repository files, and rejects stale updates. No GitHub client secret or access token belongs in the public frontend.
+
+The new `content.json` contains the same published portfolio data and becomes the connected editor's source. Manual publication after activation must update `content.json` along with `js/data.js` and `index.html`. The sections below describe the local editor and manual workflow; see the setup guide for the connected workflow.
+
 ## Step 1: Architecture overview
 
 `index.html` contains the public single-page portfolio, and its footer includes an **Admin** link to `admin.html`. The editor starts at a password screen. The initial password is `admin123`. It compares a SHA-256 hash in the browser before revealing the dashboard.

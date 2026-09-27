@@ -1,0 +1,166 @@
+{
+  "hero": {
+    "name": "Saleh Ahmed",
+    "title": "Software Engineering Student",
+    "tagline": "Connecting people, processes, and thoughtful software.",
+    "status": "Open to co-op & junior opportunities",
+    "location": "Based in Kamloops, British Columbia",
+    "primaryLabel": "Explore my work",
+    "primaryUrl": "#projects",
+    "secondaryLabel": "Get in touch",
+    "secondaryUrl": "#contact",
+    "focusLabel": "A curious mind. A practical approach.",
+    "focusKicker": "Where my interests meet",
+    "focusTitle": "People.\nProcesses.\nPossibilities.",
+    "focusFooter": "Learning with purpose. Building with care."
+  },
+  "about": {
+    "heading": "Technology with\na human perspective.",
+    "text": "Software Engineering student with a strong interest in digital transformation, business process improvement, and data-driven solutions. Experienced in requirements gathering, systems analysis, database management, and web development.",
+    "learning": "Eager to grow skills in Power Apps, Power Automate, Power BI, and SQL."
+  },
+  "headings": {
+    "skills": "Tools for turning ideas into momentum.",
+    "experience": "Experience that keeps me grounded.",
+    "projects": "Ideas made tangible.",
+    "projectsIntro": "Academic projects at the University of Bolton.",
+    "education": "Building a wider point of view.",
+    "footer": "Saleh Ahmed · Built with curiosity."
+  },
+  "skills": [
+    {
+      "name": "MySQL",
+      "percentage": null
+    },
+    {
+      "name": "PHP",
+      "percentage": null
+    },
+    {
+      "name": "JavaScript",
+      "percentage": null
+    },
+    {
+      "name": "HTML",
+      "percentage": null
+    },
+    {
+      "name": "CSS",
+      "percentage": null
+    },
+    {
+      "name": "Bootstrap",
+      "percentage": null
+    },
+    {
+      "name": "Microsoft Office",
+      "percentage": null
+    },
+    {
+      "name": "GitHub",
+      "percentage": null
+    },
+    {
+      "name": "Requirements Gathering",
+      "percentage": null
+    },
+    {
+      "name": "Systems Analysis",
+      "percentage": null
+    }
+  ],
+  "experience": [
+    {
+      "title": "Cashier Assistant",
+      "company": "Costco Wholesale",
+      "location": "Kamloops",
+      "period": "July 2024 – Present",
+      "bullets": []
+    },
+    {
+      "title": "Sales Associate",
+      "company": "7-Eleven",
+      "location": "Kamloops",
+      "period": "July 2022 – Present",
+      "bullets": []
+    },
+    {
+      "title": "Security Guard",
+      "company": "Lapper Security",
+      "location": "Kamloops",
+      "period": "April 2024 – January 2025",
+      "bullets": []
+    },
+    {
+      "title": "Junior Developer",
+      "company": "HS Digital",
+      "location": "Dhaka, Bangladesh",
+      "period": "January 2023 – June 2023",
+      "bullets": []
+    }
+  ],
+  "projects": [
+    {
+      "title": "Visor Insurance Systems Analysis",
+      "category": "Systems analysis",
+      "description": "An academic project exploring insurance systems analysis and the relationships between people, process, and technology.",
+      "institution": "University of Bolton",
+      "tags": [
+        "Systems thinking",
+        "Coursework"
+      ],
+      "url": "",
+      "linkLabel": "View project"
+    },
+    {
+      "title": "Animal Weight Tracker",
+      "category": "Software project",
+      "description": "An academic project focused on creating a clear, useful way to track animal weight over time.",
+      "institution": "University of Bolton",
+      "tags": [
+        "Application development",
+        "Coursework"
+      ],
+      "url": "",
+      "linkLabel": "View project"
+    },
+    {
+      "title": "Driverless Website",
+      "category": "Web development",
+      "description": "An academic website project exploring the ideas, context, and technology behind driverless systems.",
+      "institution": "University of Bolton",
+      "tags": [
+        "Web development",
+        "Coursework"
+      ],
+      "url": "",
+      "linkLabel": "View project"
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Sc. Software Engineering",
+      "institution": "University of Bolton",
+      "period": "Expected December 2027",
+      "description": ""
+    },
+    {
+      "degree": "Tourism Management Diploma",
+      "institution": "Thompson Rivers University",
+      "period": "January 2024 – Present",
+      "description": ""
+    }
+  ],
+  "contact": {
+    "eyebrow": "Let’s connect",
+    "heading": "Good things start\nwith a conversation.",
+    "text": "Have a co-op opportunity, a junior role, or an interesting project? I’d love to hear from you.",
+    "email": "salehmed2025@gmail.com",
+    "phone": "(250) 879-7817",
+    "linkedin": "",
+    "location": "Kamloops, British Columbia",
+    "emailLabel": "Email me",
+    "phoneLabel": "Call me",
+    "linkedinLabel": "LinkedIn"
+  }
+}

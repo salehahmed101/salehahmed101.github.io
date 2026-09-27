@@ -4,6 +4,7 @@
   // Replace the hash below with the SHA-256 hash of your chosen password.
   const ADMIN_PASSWORD_SHA256 = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
   const app = window.Portfolio;
+  const publisher = window.PortfolioPublisher;
   const dashboard = document.getElementById("dashboard");
   const content = document.getElementById("editor-content");
   const preview = document.querySelector(".editor-preview iframe");
@@ -15,11 +16,14 @@
   let dirty = false;
   let pendingConfirmation = null;
   let importedInput = null;
+  let remoteHead = "";
+  let publishing = false;
+  let pendingPublish = null;
   const dialog = document.getElementById("confirm-dialog");
   const node = (tag, className, text) => { const result = document.createElement(tag); if (className) result.className = className; if (text !== undefined) result.textContent = app.noDigits(text); return result; };
   function notify(message, error = false) { status.textContent = app.noDigits(message); status.classList.toggle("error", error); }
   function syncPreview() { if (authenticated) preview.contentWindow?.Portfolio?.render(draft); }
-  function changed() { dirty = true; notify("Unsaved changes. Your preview is up to date."); syncPreview(); }
+  function changed() { dirty = true; pendingPublish = null; notify("Unsaved changes. Your preview is up to date."); syncPreview(); }
   function confirmAction(message, action) {
     if (!dirty) { action(); return; }
     pendingConfirmation = action; document.getElementById("confirm-message").textContent = message; dialog.showModal();
@@ -77,6 +81,7 @@
   function backups() {
     content.append(node("p", "backup-note", "Export JSON to keep a backup of your current draft. Import a backup to preview its content, then choose Save Changes to keep it in this browser."));
     const actions = node("div", "backup-actions"); button(actions, "Export JSON", () => safeExport());
+    button(actions, "Restore browser draft", () => confirmAction("Replace your current edits with the draft saved in this browser?", () => { draft = app.load(); changed(); showTab("Hero"); }));
     importedInput = node("input"); importedInput.type = "file"; importedInput.accept = ".json,application/json"; importedInput.hidden = true;
     button(actions, "Import JSON", () => importedInput.click());
     importedInput.addEventListener("change", async () => {
@@ -119,6 +124,7 @@
     showTab(tabs[index]);document.getElementById("tab-"+tabs[index].toLowerCase()).focus();
   });
   document.getElementById("login-form").addEventListener("submit",async event=>{
+    if (publisher?.server || publisher?.configured) { event.preventDefault(); return; }
     event.preventDefault();const input=document.getElementById("password");const loginStatus=document.getElementById("login-status");const submit=event.currentTarget.querySelector("button");submit.disabled=true;
     try {
       if(!window.crypto?.subtle)throw new Error("Open this editor over HTTPS or a local development server.");
@@ -130,12 +136,94 @@
   });
   document.getElementById("save").addEventListener("click",()=>{
     if(!authenticated)return;
-    try{draft=app.save(draft);dirty=false;syncPreview();notify("Saved in this browser. Export a publication file to update the shared website.");}
+    try{draft=app.save(draft);dirty=false;syncPreview();notify(publisher?.server ? "Draft saved in this browser. Choose Publish to GitHub when it is ready to go live." : "Draft saved in this browser. Use Backups to export it for publication.");}
     catch(error){notify(error.name==="QuotaExceededError"?"Browser storage is full. Export a backup before clearing space.":error.name==="SecurityError"?"This browser has blocked storage. Export a backup to keep your edits.":error.message,true);}
   });
-  document.getElementById("logout").addEventListener("click",()=>confirmAction("Your unsaved draft will be discarded when you log out.",()=>{authenticated=false;draft=null;dirty=false;content.replaceChildren();dashboard.hidden=true;document.getElementById("login-section").hidden=false;document.getElementById("password").focus();preview.contentWindow?.Portfolio?.render(app.load());}));
+  document.getElementById("logout").addEventListener("click",()=>confirmAction("Your unsaved draft will be discarded when you log out.",async()=>{
+    try { if (publisher?.server) await publisher.logout(); }
+    catch (error) { notify(error.message, true); return; }
+    authenticated=false;draft=null;dirty=false;remoteHead="";pendingPublish=null;content.replaceChildren();dashboard.hidden=true;document.getElementById("login-section").hidden=false;
+    (publisher?.configured ? document.getElementById("github-login") : document.getElementById("password")).focus();
+    preview.contentWindow?.Portfolio?.render(app.load());
+  }));
   document.getElementById("backup-shortcut").addEventListener("click",()=>{showTab("Backups");content.focus();});
   preview.addEventListener("load",syncPreview);
-  window.addEventListener("beforeunload",event=>{if(dirty){event.preventDefault();event.returnValue="";}});
+  window.addEventListener("beforeunload",event=>{if(dirty || publishing){event.preventDefault();event.returnValue="";}});
   window.addEventListener("storage",event=>{if(authenticated&&event.key===app.storageKey)notify("Content changed in another tab. Export your draft before reloading if you want to keep it.");});
+
+  document.getElementById("publish").addEventListener("click", async () => {
+    if (!authenticated || !publisher?.server || publishing) return;
+    const publishStatus = document.getElementById("publish-status");
+    publishing = true;
+    dashboard.inert = true;
+    dashboard.setAttribute("aria-busy", "true");
+    publishStatus.classList.remove("error");
+    publishStatus.textContent = "Publishing your portfolio and SEO page to GitHub…";
+    try {
+      const clean = app.validate(draft);
+      pendingPublish ||= crypto.randomUUID();
+      const result = await publisher.publish(clean, remoteHead, pendingPublish);
+      remoteHead = result.commit;
+      pendingPublish = null;
+      draft = clean;
+      dirty = false;
+      try { app.save(clean); } catch {}
+      publishStatus.replaceChildren(node("span", "", "Published to GitHub. The live website will update after deployment. "));
+      const commitLink = node("a", "", "View commit ↗");
+      commitLink.href = result.commitUrl;
+      commitLink.target = "_blank";
+      commitLink.rel = "noopener noreferrer";
+      publishStatus.append(commitLink);
+      notify("Your portfolio content and search information were published together.");
+    } catch (error) {
+      publishStatus.classList.add("error");
+      publishStatus.textContent = error.message;
+      if (error.status === 401) {
+        const signIn = node("a", "", " Save a draft, then sign in again ↗");
+        signIn.href = publisher.loginUrl;
+        publishStatus.append(signIn);
+      }
+    } finally {
+      publishing = false;
+      dashboard.inert = false;
+      dashboard.removeAttribute("aria-busy");
+    }
+  });
+
+  async function connectGitHub() {
+    const loginLink = document.getElementById("github-login");
+    const loginStatus = document.getElementById("github-login-status");
+    if (publisher?.server) {
+      document.getElementById("local-login").hidden = true;
+      document.querySelectorAll(".admin-header a").forEach(anchor => { anchor.href = "https://salehahmed101.github.io/"; });
+      if (!publisher.configured) document.getElementById("connection-help").textContent = "GitHub publishing needs its one-time setup before you can sign in.";
+    }
+    if (!publisher?.configured) return;
+    document.getElementById("local-login").hidden = true;
+    document.getElementById("connection-help").textContent = "Sign in with your GitHub account to edit and publish your portfolio.";
+    loginLink.href = publisher.loginUrl;
+    loginLink.hidden = false;
+    if (!publisher.server) return;
+    loginStatus.textContent = "Checking your GitHub session…";
+    try {
+      const session = await publisher.connect();
+      const published = await publisher.load();
+      draft = app.validate(published.data);
+      remoteHead = published.head;
+      authenticated = true;
+      dirty = false;
+      document.getElementById("login-section").hidden = true;
+      dashboard.hidden = false;
+      document.getElementById("publish").hidden = false;
+      document.getElementById("editor-notice").textContent = "Connected as " + session.login + ". Save draft keeps a local backup; Publish to GitHub updates your live portfolio and SEO page together.";
+      showTab("Hero");
+      syncPreview();
+      notify("Loaded the latest published content from GitHub. Previous browser drafts are available in Backups.");
+      loginStatus.textContent = "";
+    } catch (error) {
+      loginStatus.textContent = error.status === 401 ? "Sign in to begin editing." : error.message;
+      loginStatus.classList.toggle("error", error.status !== 401);
+    }
+  }
+  connectGitHub();
 })();
