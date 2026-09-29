@@ -1,6 +1,6 @@
 # Activate GitHub publishing
 
-The publishing service is implemented but is not connected to a hosting account or GitHub App yet. Until setup is complete, the public Admin retains its password-protected local editor and manual exports. It does not claim that local saves publish the site.
+The publishing service is deployed at https://saleh-portfolio-publisher.saleh-portfolio-publisher.workers.dev. The owner's GitHub App, Saleh Ahmed Portfolio Publisher, is installed only on `salehahmed101/salehahmed101.github.io`, with Contents read/write and mandatory Metadata read access. Activation still requires correcting its redirect URI, storing its client secret in Cloudflare, and testing sign-in and publishing. Until setup is complete, the public Admin retains its password-protected local editor and manual exports. It does not claim that local saves publish the site.
 
 The public portfolio stays at https://salehahmed101.github.io/. The connected editor runs on a Cloudflare Worker, with GitHub authentication and the editor on the same origin so smartphone browsers do not need third-party cookies.
 
@@ -66,6 +66,6 @@ For a local draft made before setup, export JSON from the old local editor and i
 
 Manual exports remain available as a fallback. If uploading `index.html` and `js/data.js` manually, also replace `content.json` with the corresponding JSON backup so the connected editor opens the same content.
 
-Changes to the editor's own code require another Worker deployment because its eight public assets are bundled. Editing portfolio content through Publish does not require redeploying the Worker. After installing updates run `npm ci`, `npm test`, `npm run check`, and `npm run deploy`.
+Changes to the editor's own code or the public showcase assets require another Worker deployment because the assets are bundled. Editing portfolio content through Publish does not require redeploying the Worker. After installing updates run `npm ci`, `npm test`, `npm run check`, and `npm run deploy`.
 
 Official references: [GitHub App user authentication](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-on-behalf-of-a-user), [Cloudflare Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/), and [GitHub non-forced reference updates](https://docs.github.com/en/rest/git/refs#update-a-reference).

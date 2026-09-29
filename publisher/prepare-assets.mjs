@@ -2,7 +2,7 @@ import { copyFile, mkdir } from "node:fs/promises";
 
 const source = new URL("../", import.meta.url);
 const destination = new URL(".wrangler/portfolio-assets/", import.meta.url);
-const files = ["admin.html", "css/styles.css", "css/admin.css", "js/data.js", "js/script.js", "js/admin.js", "js/github-config.js", "js/github-publish.js"];
+const files = ["admin.html", "css/styles.css", "css/showcase.css", "css/admin.css", "js/data.js", "js/script.js", "js/showcase.js", "js/admin.js", "js/github-config.js", "js/github-publish.js", "assets/animal-tracker-menu.png", "assets/animal-tracker-staff.png", "assets/driverless-home.png", "assets/driverless-collection.png"];
 for (const file of files) {
   const target = new URL(file, destination);
   await mkdir(new URL("./", target), { recursive: true });

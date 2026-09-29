@@ -125,7 +125,7 @@ export function createWorker({ fetcher = fetch, render = renderPublication } = {
     if (url.pathname === "/health" && request.method === "GET") return json({ ready: configured(env) });
     if (url.pathname === "/js/github-config.js" && request.method === "GET") return new Response("window.PORTFOLIO_GITHUB = Object.freeze(" + JSON.stringify({ backendUrl: url.origin, server: true, ready: configured(env) }) + ");", { headers: { "Content-Type": "text/javascript; charset=utf-8" } });
     if (url.pathname === "/" && request.method === "GET") return redirect("/admin.html");
-    if (request.method === "GET" && (url.pathname === "/admin.html" || /^\/(css|js)\/[a-zA-Z0-9._-]+$/.test(url.pathname))) return env.ASSETS.fetch(request);
+    if (request.method === "GET" && (url.pathname === "/admin.html" || /^\/(css|js|assets)\/[a-zA-Z0-9._-]+$/.test(url.pathname))) return env.ASSETS.fetch(request);
     if (!configured(env) || url.origin !== env.APP_ORIGIN) throw new HttpError(503, "GitHub publishing needs its one-time server setup.");
 
     if (url.pathname === "/auth/login" && request.method === "GET") {

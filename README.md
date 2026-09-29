@@ -2,6 +2,16 @@
 
 A complete, responsive portfolio using HTML, CSS, and vanilla JavaScript. No build step, framework, database, or paid service is required.
 
+## Projects-first showcase
+
+The homepage leads with visual case studies for Driverless Website and Animal Weight Tracker, using Saleh's supplied original screenshots in `assets/`. The image selectors work with a mouse, keyboard, or touch; opening an image shows the unmodified full-size screenshot. Case-study descriptions are limited to the interfaces visible in those screenshots. No programming language, backend capability, performance result, or project outcome is inferred from an image.
+
+`css/showcase.css` refines only the public page, leaving the existing Admin styles intact. `js/showcase.js` supplies screenshot selection and a new, explicitly labelled weight-tracker browser prototype. The prototype is not the original desktop coursework application. Its sample data is fictional; edits stay in memory, send no network requests, and disappear on reload. Duplicate dates, invalid weights, invalid dates, and excessive entries are rejected. The chart and accessible table remain in sync. Reset restores the sample, and the table and case studies remain readable without JavaScript.
+
+Exporting a homepage resets temporary demo entries and screenshot selection, so a visitor's demo input cannot accidentally become published content. Upload the new stylesheet, script, and all four screenshot assets alongside `index.html`. The Worker asset allowlist includes those files for the connected editor preview.
+
+Case-study narratives and screenshots are maintained in `index.html`; the existing Admin continues to edit the project summaries, personal details, experience, skills, and education. Add original project reports or repository links before expanding claims about implementation or outcomes.
+
 ## GitHub publishing upgrade
 
 The secure GitHub-connected editor is implemented in `publisher/`, with setup instructions in [publisher/SETUP.md](publisher/SETUP.md). It is not active until the Worker is deployed, the owner's GitHub App is installed on this repository, and the public `js/github-config.js` is connected. Until then, Admin explicitly offers the existing password-protected local editor and exports.
@@ -12,7 +22,7 @@ The new `content.json` contains the same published portfolio data and becomes th
 
 ## Step 1: Architecture overview
 
-`index.html` contains the public single-page portfolio, and its footer includes an **Admin** link to `admin.html`. The editor starts at a password screen. The initial password is `admin123`. It compares a SHA-256 hash in the browser before revealing the dashboard.
+`index.html` contains the public single-page portfolio, and its footer includes an **Admin** link to `admin.html`. The editor starts at a password screen and compares a SHA-256 hash in the browser before revealing the dashboard.
 
 `index.html` includes the complete published portfolio so it is readable before JavaScript runs. `js/data.js` supplies the same content to the editor and interactive renderer. `js/script.js` validates that data, renders the public page with safe text nodes, and checks browser storage for a local override. `js/admin.js` provides editing, a live preview, saving, and backup tools. Storage keys include the website path so another portfolio hosted under a different GitHub Pages project does not share these edits.
 
@@ -64,7 +74,7 @@ There is no dependency installation or compilation needed. Keep the folder struc
 ## Step 4: How to use the Admin Panel
 
 - Open the portfolio and choose **Admin** at the bottom of the page.
-- Enter `admin123`, then choose **Open editor**.
+- Enter your editor password, then choose **Open editor**.
 - Choose a section tab. Edit hero text and buttons, about text, skills, work history and its bullet points, projects and tags, education, contact information, section headings, or the footer.
 - Use **Add** and **Remove** controls to change repeated entries. Experience highlights and project tags use one entry per line. Empty project links remain hidden on the public page.
 - Open **Live portfolio preview** to see your draft as you edit. A draft is not durable until saved.
@@ -140,7 +150,7 @@ These settings follow GitHub’s [publishing-source guide](https://docs.github.c
 
 ## Step 7: Changing the Admin Password
 
-The password hash is the `ADMIN_PASSWORD_SHA256` constant near the top of `js/admin.js`. It currently corresponds to `admin123`.
+The password hash is the `ADMIN_PASSWORD_SHA256` constant near the top of `js/admin.js`. Keep the editor password in your private records rather than public documentation.
 
 Generate a new hash locally using Node.js. Start Node with `node` in a terminal, then run this example after replacing the placeholder with your chosen password:
 

@@ -115,6 +115,7 @@
   function exportHtml(data) {
     const snapshot = document.cloneNode(true);
     render(validate(data), snapshot);
+    window.PortfolioShowcase?.resetSnapshot(snapshot);
     snapshot.querySelector(".menu-toggle")?.setAttribute("aria-expanded", "false");
     return "<!doctype html>\n" + snapshot.documentElement.outerHTML + "\n";
   }
@@ -126,4 +127,5 @@
   const menu = document.querySelector(".menu-toggle");
   menu?.addEventListener("click", () => menu.setAttribute("aria-expanded", String(menu.getAttribute("aria-expanded") !== "true")));
   document.querySelectorAll("#navigation a").forEach(anchor => anchor.addEventListener("click", () => menu?.setAttribute("aria-expanded", "false")));
+  document.addEventListener("keydown", event => { if (event.key === "Escape") menu?.setAttribute("aria-expanded", "false"); });
 })();
