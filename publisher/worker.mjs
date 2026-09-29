@@ -82,7 +82,7 @@ export function createWorker({ fetcher = fetch, render = renderPublication } = {
     let response;
     try {
       response = await fetcher("https://api.github.com" + path, {
-        method: options.method || "GET", redirect: "error", signal: AbortSignal.timeout(15000),
+        method: options.method || "GET", redirect: "manual", signal: AbortSignal.timeout(15000),
         headers: { Authorization: "Bearer " + token, Accept: "application/vnd.github+json", "Content-Type": "application/json", "User-Agent": "Saleh-Portfolio-Publisher", "X-GitHub-Api-Version": "2022-11-28" },
         ...(options.body ? { body: JSON.stringify(options.body) } : {})
       });
@@ -143,7 +143,7 @@ export function createWorker({ fetcher = fetch, render = renderPublication } = {
       const state = await readCookie(request, env, STATE_COOKIE);
       if (!state || url.searchParams.get("state") !== state.state || !url.searchParams.get("code") || url.searchParams.has("error")) throw new HttpError(400, "GitHub sign-in was cancelled or expired. Return to Admin and try again.");
       const exchange = await fetcher("https://github.com/login/oauth/access_token", {
-        method: "POST", redirect: "error", signal: AbortSignal.timeout(15000),
+        method: "POST", redirect: "manual", signal: AbortSignal.timeout(15000),
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({ client_id: env.GITHUB_CLIENT_ID, client_secret: env.GITHUB_CLIENT_SECRET, code: url.searchParams.get("code"), redirect_uri: env.APP_ORIGIN + "/auth/callback", code_verifier: state.verifier })
       });
@@ -167,7 +167,7 @@ export function createWorker({ fetcher = fetch, render = renderPublication } = {
     if (url.pathname === "/api/logout" && request.method === "POST") {
       requireWrite(request, env, session);
       const revoked = await fetcher("https://api.github.com/applications/" + encodeURIComponent(env.GITHUB_CLIENT_ID) + "/token", {
-        method: "DELETE", redirect: "error", signal: AbortSignal.timeout(15000),
+        method: "DELETE", redirect: "manual", signal: AbortSignal.timeout(15000),
         headers: { Authorization: "Basic " + btoa(env.GITHUB_CLIENT_ID + ":" + env.GITHUB_CLIENT_SECRET), Accept: "application/vnd.github+json", "Content-Type": "application/json", "User-Agent": "Saleh-Portfolio-Publisher" },
         body: JSON.stringify({ access_token: session.accessToken })
       });
@@ -217,7 +217,16 @@ export function createWorker({ fetcher = fetch, render = renderPublication } = {
   return {
     async fetch(request, env) {
       try { return secure(await routes(request, env)); }
-      catch (error) { return secure(json({ error: error instanceof HttpError ? error.message : "The publishing service could not finish this request. Your draft is still available." }, error instanceof HttpError ? error.status : 500)); }
+      catch (error) {
+        if (!(error instanceof HttpError)) console.error("portfolio publisher request failed", {
+          method: request.method,
+          path: new URL(request.url).pathname,
+          name: error instanceof Error ? error.name : "UnknownError",
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined
+        });
+        return secure(json({ error: error instanceof HttpError ? error.message : "The publishing service could not finish this request. Your draft is still available." }, error instanceof HttpError ? error.status : 500));
+      }
     }
   };
 }

@@ -28,7 +28,9 @@ function harness(options = {}) {
     fetcher: async (url, init = {}) => {
       const target = new URL(url);
       const body = init.body ? JSON.parse(init.body) : null;
-      calls.push({ url: target.href, path: target.pathname, method: init.method || "GET", body, headers: init.headers });
+      calls.push({ url: target.href, path: target.pathname, method: init.method || "GET", body, headers: init.headers, redirect: init.redirect });
+      if (init.redirect === "error") throw new TypeError("Cloudflare Workers does not support redirect: error.");
+      if (target.pathname === options.redirectPath) return new Response(null, { status: 302, headers: { Location: "https://unexpected.example.test/" } });
       if (target.hostname === "github.com") return response({ access_token: "test-user-access-token", expires_in: 28800 });
       assert.equal(target.hostname, "api.github.com");
       if (target.pathname === "/user") return response({ id: options.ownerId ?? OWNER_ID, login: "salehahmed101" });
@@ -112,6 +114,22 @@ test("publishing rejects cross-origin requests, bad CSRF, and forged sessions", 
   assert.equal((await backend.call("/api/publish", { method: "POST", headers: { ...headers, "X-CSRF-Token": "wrong" }, body })).status, 403);
   assert.equal((await backend.call("/api/content", { headers: { Cookie: "__Host-portfolio-session=forged" } })).status, 401);
   assert.equal(backend.calls.filter(call => ["POST", "PATCH"].includes(call.method) && call.path.startsWith("/repos/")).length, 0);
+});
+
+test("GitHub redirects fail closed without forwarding credentials", async () => {
+  const options = { redirectPath: "/login/oauth/access_token" };
+  const backend = harness(options);
+  const rejected = (await backend.login()).callback;
+  assert.equal(rejected.status, 502);
+  assert.equal(rejected.headers.getSetCookie().length, 0);
+  options.redirectPath = "";
+  const headers = await backend.authorized();
+  options.redirectPath = "/user";
+  assert.equal((await backend.call("/api/content", { headers })).status, 502);
+  options.redirectPath = "/applications/test-client-id/token";
+  assert.equal((await backend.call("/api/logout", { method: "POST", headers })).status, 502);
+  assert.ok(backend.calls.every(call => call.redirect === "manual"));
+  assert.ok(backend.calls.every(call => new URL(call.url).hostname !== "unexpected.example.test"));
 });
 
 test("publishes only the fixed content files in one non-forced commit", async () => {

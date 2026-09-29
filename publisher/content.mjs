@@ -97,7 +97,7 @@ export function publicationParts(data) {
 export async function renderPublication(template, data) {
   if (!template.includes('id="hero-name"') || !template.includes('id="profile-schema"')) throw new Error("The homepage template is missing required portfolio sections.");
   const parts = publicationParts(data);
-  let rewriter = new HTMLRewriter().on("title", { element(element) { element.setInnerContent(parts.title); } });
+  let rewriter = new HTMLRewriter().on("head > title", { element(element) { element.setInnerContent(parts.title); } });
   for (const [id, value] of Object.entries(parts.text)) rewriter = rewriter.on("#" + id, { element(element) { element.setInnerContent(value); } });
   for (const [id, value] of Object.entries(parts.html)) rewriter = rewriter.on("#" + id, { element(element) { element.setInnerContent(value, { html: true }); } });
   for (const [selector, value] of Object.entries(parts.meta)) rewriter = rewriter.on(selector, { element(element) { element.setAttribute("content", value); } });
