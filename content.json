@@ -105,36 +105,36 @@
       "category": "Systems analysis",
       "description": "An academic project exploring insurance systems analysis and the relationships between people, process, and technology.",
       "institution": "University of Bolton",
+      "url": "",
+      "linkLabel": "View project",
       "tags": [
         "Systems thinking",
         "Coursework"
-      ],
-      "url": "",
-      "linkLabel": "View project"
+      ]
     },
     {
       "title": "Animal Weight Tracker",
       "category": "Software project",
       "description": "An academic project focused on creating a clear, useful way to track animal weight over time.",
       "institution": "University of Bolton",
+      "url": "",
+      "linkLabel": "View project",
       "tags": [
         "Application development",
         "Coursework"
-      ],
-      "url": "",
-      "linkLabel": "View project"
+      ]
     },
     {
       "title": "Driverless Website",
       "category": "Web development",
       "description": "An academic website project exploring the ideas, context, and technology behind driverless systems.",
       "institution": "University of Bolton",
+      "url": "",
+      "linkLabel": "View project",
       "tags": [
         "Web development",
         "Coursework"
-      ],
-      "url": "",
-      "linkLabel": "View project"
+      ]
     }
   ],
   "education": [
