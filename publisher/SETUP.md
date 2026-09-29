@@ -1,6 +1,6 @@
 # Activate GitHub publishing
 
-The publishing service is deployed at https://saleh-portfolio-publisher.saleh-portfolio-publisher.workers.dev. The owner's GitHub App, Saleh Ahmed Portfolio Publisher, is installed only on `salehahmed101/salehahmed101.github.io`, with Contents read/write and mandatory Metadata read access. Activation still requires correcting its redirect URI, storing its client secret in Cloudflare, and testing sign-in and publishing. Until setup is complete, the public Admin retains its password-protected local editor and manual exports. It does not claim that local saves publish the site.
+The publishing service is configured at https://saleh-portfolio-publisher.saleh-portfolio-publisher.workers.dev. The owner's GitHub App, Saleh Ahmed Portfolio Publisher, is installed only on `salehahmed101/salehahmed101.github.io`, with Contents read/write and mandatory Metadata read access. Its redirect URI is saved, the required secrets are stored in Cloudflare, and the health check reports ready. The public Admin configuration points to the service. GitHub authorization succeeded, but the Codex in-app browser blocked the return URL with `ERR_BLOCKED_BY_CLIENT`; complete sign-in in a regular browser and verify publishing before treating setup as fully tested.
 
 The public portfolio stays at https://salehahmed101.github.io/. The connected editor runs on a Cloudflare Worker, with GitHub authentication and the editor on the same origin so smartphone browsers do not need third-party cookies.
 
